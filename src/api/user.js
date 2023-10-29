@@ -8,3 +8,19 @@ export function login(data){
         data
     })
 }
+
+export function reset_passwd(data){
+    return service({
+        method:'PUT',
+        url: '/user/reset',
+        data
+    })
+}
+
+export function register(data){
+    return service({
+        method:'POST',
+        url: '/user/register',
+        data
+    })
+}

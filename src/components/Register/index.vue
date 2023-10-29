@@ -1,9 +1,10 @@
 <template>
+
   <div class="login">
 
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>rsspush后台管理</span>
+        <span>注册</span>
       </div>
 
       <el-form label-width="80px" :model="form" ref="from" :rules=rule>
@@ -13,22 +14,22 @@
         <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="button">
           <el-button
               type="primary"
-              @click="login('from')">登录
+              @click="register('from')">注册
           </el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    <el-button type="warning" @click="register()" class="register">注册</el-button>
+    <el-button type="warning" @click="login()" class="login">登录</el-button>
   </div>
 </template>
 
 <script>
 import { phonerule, passrule } from '@/utils/vaildate'
 import { setToken } from '@/utils/setToken'
-import { login } from "@/api/user";
+import { register } from "@/api/user";
 
 export default {
 
@@ -45,16 +46,16 @@ export default {
     };
   },
   methods: {
-    register(){
-      this.$router.push('/register')
+    login(){
+      this.$router.push('/login')
     },
-    login(from) {
+    register(from) {
       this.$refs[from].validate((valid) => {
         if(valid){
-          login(this.form).then((res) =>{
+          register(this.form).then((res) =>{
             if (res.code === 0){
-                setToken(res.data.token)
-                this.$router.push('/admin')
+              setToken(res.data.token)
+              this.$router.push('/admin')
             }
           })
         }else {
@@ -85,13 +86,14 @@ export default {
       text-align: center;
     }
   }
+  .login{
+    margin-top: -190px;
+    margin-left: -80px;
+    height: 60px;
+    width: 140px;
+    background-color: orange;
+  }
+}
 
-}
-.register{
-  margin-left: -50px;
-  height: 60px;
-  width: 140px;
-  background-color: orange;
-}
 
 </style>

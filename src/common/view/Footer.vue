@@ -1,7 +1,7 @@
 <template>
   <div class="Footer">
     <el-card>
-      Powered by <a href="https://github.com/buyfakett">buyfakett</a> in 2023
+      Powered by <a href="https://github.com/buyfakett">buyfakett</a> @2023
     </el-card>
   </div>
 

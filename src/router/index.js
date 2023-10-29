@@ -8,9 +8,15 @@ export default new Router({
   routes: [
     {
       path: '/login',
-      name: 'login',
+      name: '登录',
       hidden: true,
       component: () => import('@/components/Login/index')
+    },
+    {
+      path: '/register',
+      name: '注册',
+      hidden: true,
+      component: () => import('@/components/Register/index')
     },
     {
       path: '/',
@@ -36,12 +42,6 @@ export default new Router({
           iconClass: 'fa fa-list',
           name: 'rss管理',
           component: () => import('@/components/Home/rss/index')
-        },
-        {
-          path: '/admin/push-detail',
-          iconClass: 'fa fa-align-left',
-          name: 'push管理',
-          component: () => import('@/components/Home/push/index')
         },
           ]
     },

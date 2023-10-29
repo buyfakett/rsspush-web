@@ -15,6 +15,13 @@ Vue.prototype.service = service
 
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  if (to.name) {
+    document.title = to.name
+  }
+  next()
+})
+
 
 new Vue({
   router,
