@@ -35,8 +35,8 @@ export default {
   data() {
     return {
       form: {
-        phone: '13333333333',
-        password: 'admin123456'
+        phone: '',
+        password: ''
       },
       rule: {
         phone: [{ validator: phonerule, trigger: 'blur' }],

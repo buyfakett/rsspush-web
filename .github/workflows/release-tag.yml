@@ -1,6 +1,6 @@
 #https://github.com/yyx990803/release-tag
 
-name: Create Release
+name: Create Release2
 
 on:
   push:

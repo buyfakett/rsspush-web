@@ -1,24 +1,5 @@
-# vue2manage
+<h1 align="center">rsspush-web</h1>
 
-## Project setup
-```
-yarn install
-```
+此项目是[rsspush](https://github.com/buyfakett/rsspush)的前端
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+dist分支是打包产物
