@@ -17,11 +17,14 @@
     </el-header>
     <el-dialog title="修改密码" :visible.sync="passwdFormVisible">
       <el-form :model="passwdForm" :rules=rule>
-        <el-form-item label="旧密码：" label-width="80px">
-          <el-input v-model="passwdForm.old_password" autocomplete="off"></el-input>
+        <el-form-item label="旧密码：" label-width="100px">
+          <el-input type="password" v-model="passwdForm.old_password" prop="old_password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="新密码：" label-width="80px">
-          <el-input v-model="passwdForm.password" autocomplete="off"></el-input>
+        <el-form-item label="新密码：" label-width="100px">
+          <el-input type="password" v-model="passwdForm.password" prop="password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码：" label-width="100px">
+          <el-input type="password" v-model="passwdForm.checkPass" prop="checkPass" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -44,19 +47,22 @@
 
 import { passrule } from "@/utils/vaildate";
 import { reset_passwd } from "@/api/user";
-import {removeToken, setToken} from "@/utils/setToken";
+import { removeToken, setToken } from "@/utils/setToken";
+import { Message } from "element-ui";
 
 export default {
   data(){
     return {
       passwdFormVisible: false,
       passwdForm: {
-        old_password: "",
-        password: "",
+        old_password: "admin123456",
+        password: "admin12345",
+        checkPass: "admin12345",
       },
       rule: {
         old_password: [{ validator: passrule, trigger: 'blur' }],
-        password: [{ validator: passrule, trigger: 'blur' }]
+        password: [{ validator: passrule, trigger: 'blur' }],
+        checkPass: [{ validator: passrule, trigger: 'blur' }]
       },
       logOutVisible: false,
     };
@@ -66,15 +72,17 @@ export default {
       this.passwdFormVisible = true
     },
     passwd_button(passwdForm){
-      this.$refs[from].validate((valid) => {
-      reset_passwd(passwdForm)
-          .then(res => {
-            if (res.code === 0) {
-              this.rssFormVisible = false
-              setToken(res.data.token)
-            }
-          })
-          })
+          if (passwdForm.password !== passwdForm.checkPass) {
+            Message.error({message: '两次密码不一样', type: 'error'});
+          } else {
+            reset_passwd(passwdForm)
+                .then(res => {
+                  if (res.code === 0) {
+                    this.passwdFormVisible = false
+                    setToken(res.data.token)
+                  }
+                })
+          }
     },
     is_log_out(){
       this.logOutVisible = true

@@ -12,7 +12,7 @@
       <el-table-column width="center" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit_rss(scope.row)">修改rss地址</el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="delete_rss(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="is_delete_rss(scope.row.id)">删除</el-button>
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit_push(scope.row)">修改推送</el-button>
         </template>
       </el-table-column>
@@ -72,6 +72,14 @@
         <el-button type="primary" @click="push_button(pushForm)">确 定</el-button>
       </div>
     </el-dialog>
+      <el-dialog
+          title="确定删除吗？"
+          :visible.sync="deleteVisible"
+          width="30%">
+      <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="delete_rss()">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -117,6 +125,9 @@ export default {
       shouDing: false,
       push_id: '',
       rss_id: '',
+      detection_push: false,
+      deleteVisible: false,
+      delete_id: '',
     }
   },
   watch:{
@@ -131,6 +142,10 @@ export default {
     }
   },
   methods: {
+    is_delete_rss(id){
+      this.deleteVisible = true
+      this.delete_id = id
+    },
     handleSizeChange(val) {
       this.pageSize = val
       this.params.pageSize = val
@@ -162,17 +177,18 @@ export default {
             }
           })
     },
-    delete_rss(id){
-      let data = {id: id}
+    delete_rss(){
+      let data = {id: this.delete_id}
       delete_rss(data)
           .then(res => {
             if (res.code === 0) {
               this.getList(this.params)
+              this.deleteVisible = false
+              this.delete_id = ''
             }
           })
     },
     edit_rss(row){
-      console.log(row)
       this.rss_title_state = false
       this.rssForm = {...row}
       this.rssFormVisible = true
@@ -192,18 +208,24 @@ export default {
             })
     },
     push_button(pushForm){
+      this.detection = false
       pushForm.id = ''
       if(pushForm.push_type === '') {
         Message.error({message: '参数缺少', type: 'error'})
       }else if(pushForm.push_type === 'ding'){
           if (pushForm.ding_access_token === '' || pushForm.ding_keyword ===''){
             Message.error({message: '参数缺少', type: 'error'})
+          }else {
+            this.detection = true
           }
         }else if(pushForm.push_type === 'wechat'){
         if (pushForm.wechat_app_id === '' || pushForm.wechat_template_id ==='' || pushForm.wechat_to_user_ids ===''){
           Message.error({message: '参数缺少', type: 'error'})
+        }else {
+          this.detection = true
         }
-      }else {
+      }
+      if(this.detection) {
         if (this.push_id !== '') {
           pushForm.id = this.push_id
           change_push(pushForm)
@@ -254,7 +276,6 @@ export default {
                   this.pushForm.ding_access_token = res.data.ding_access_token
                   this.pushForm.ding_keyword = res.data.ding_keyword
                 }
-                console.log(res)
                 this.pushForm.detection_time = res.data.detection_time
                 this.push_id = res.data.id
               }
@@ -279,7 +300,7 @@ export default {
   text-align: left;
 }
 .choosePushType{
-  width: 1035px;
+  width: 700px;
   //margin-bottom: 20px;
   //margin-left: 10px;
 }

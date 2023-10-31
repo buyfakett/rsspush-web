@@ -1,11 +1,11 @@
 import axios from "axios";
 import {getToken} from "@/utils/setToken";
-import {Message} from "element-ui";
+import { Message } from "element-ui";
 
 const service = axios.create({
     baseURL: '/api',
-    // timeout: 5000
-    timeout: 999999999
+    timeout: 5000
+    // timeout: 999999999
 })
 
 service.interceptors.request.use((config) => {
